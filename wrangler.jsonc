@@ -35,7 +35,29 @@
 	"observability": {
 		"enabled": true
 	},
-	"upload_source_maps": true
+	"upload_source_maps": true,
+	"d1_databases": [
+		{
+			"binding": "notee_db",
+			"database_name": "notee-db",
+			"database_id": "ffa6011b-3080-4b50-9147-a96339eb1680",
+			"remote": true
+		}
+	],
+	"vectorize": [
+		{
+			"binding": "VECTORIZE",
+			"index_name": "notee-vectors",
+			"remote": true
+		}
+	],
+	"r2_buckets": [
+		{
+			"bucket_name": "notee-files",
+			"binding": "notee_files",
+			"remote": true
+		}
+	]
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
