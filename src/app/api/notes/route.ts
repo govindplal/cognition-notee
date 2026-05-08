@@ -6,9 +6,6 @@ import { drizzle } from 'drizzle-orm/d1'
 import { eq } from 'drizzle-orm'
 import { notes, contextEnvelopes } from '@/db/schema'
 
-
-export const runtime = 'edge'
-
 export async function POST(req: NextRequest) {
     const { userId } = await auth()
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -37,16 +34,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ id: noteId })
 }
 
-export async function GET() {
-    const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+export async function GET(req: NextRequest) {
+    try {
+        const { userId } = await auth()
+        if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-    const { env } = await getCloudflareContext({ async: true })
-    const db = drizzle((env as any).DB || (env as any).notee_db)
+        const { env } = await getCloudflareContext({ async: true })
+        const db = drizzle((env as any).DB || (env as any).notee_db)
 
-    const allNotes = await db.select().from(notes).where(
-        eq(notes.userId, userId)
-    )
+        const allNotes = await db.select().from(notes).where(
+            eq(notes.userId, userId)
+        )
 
-    return NextResponse.json(allNotes)
+        return NextResponse.json(allNotes)
+    } catch (e: any) {
+        return NextResponse.json({ error: e.message, stack: e.stack }, { status: 500 })
+    }
 }
