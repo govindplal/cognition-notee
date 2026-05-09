@@ -25,3 +25,6 @@ CREATE TABLE IF NOT EXISTS connections (
   strength REAL NOT NULL DEFAULT 0,
   updated_at INTEGER NOT NULL
 );
+
+ALTER TABLE notes ADD COLUMN file_name TEXT;
+ALTER TABLE notes ADD COLUMN mime_type TEXT;

@@ -4,9 +4,11 @@ import { sqliteTable, text, integer, real, blob } from 'drizzle-orm/sqlite-core'
 export const notes = sqliteTable('notes', {
     id: text('id').primaryKey(),
     userId: text('user_id').notNull(),
-    type: text('type').notNull(), // text | image | pdf | video | audio | web
+    type: text('type').notNull().default('text'), // text | image | pdf | video | audio | web
     rawContent: text('raw_content'),
     filePath: text('file_path'), // R2 key if file
+    fileName: text('file_name'),
+    mimeType: text('mime_type'),
     createdAt: integer('created_at').notNull(),
 })
 
