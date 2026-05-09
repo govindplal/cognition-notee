@@ -3,7 +3,7 @@ import { auth } from '@clerk/nextjs/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { drizzle } from 'drizzle-orm/d1'
-import { eq } from 'drizzle-orm'
+import { desc, eq } from 'drizzle-orm'
 import { notes, contextEnvelopes } from '@/db/schema'
 
 export async function POST(req: NextRequest) {
@@ -44,7 +44,7 @@ export async function GET(req: NextRequest) {
 
         const allNotes = await db.select().from(notes).where(
             eq(notes.userId, userId)
-        )
+        ).orderBy(desc(notes.createdAt))
 
         return NextResponse.json(allNotes)
     } catch (e: any) {
